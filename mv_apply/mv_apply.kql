@@ -1,0 +1,46 @@
+﻿//Converting lists to columns
+let Logs = datatable(Timestamp: datetime, LogLines: dynamic)
+[
+    datetime(2024-09-18), dynamic(["INFO: System started", "WARNING: High memory usage", "ERROR: Out of memory", "DEBUG: Memory stats"]),
+    datetime(2024-09-19), dynamic(["INFO: Service restarted", "ERROR: Failed to connect", "DEBUG: Connection retry"]),
+    datetime(2024-09-20), dynamic(["INFO: Backup started", "INFO: Backup completed"])
+];
+let searchTerm1 = "ERROR";
+let searchTerm2 = "WARNING";
+Logs
+| mv-apply LogLine = LogLines to typeof(string) on (
+    // Filter the log lines containing either ERROR or WARNING
+    where LogLine contains searchTerm1 or LogLine contains searchTerm2
+    // Create a new column to classify the log type
+    | extend LogType = case(
+        LogLine contains searchTerm1, "Error",
+        LogLine contains searchTerm2, "Warning",
+        "Other"
+    )
+    // Summarize counts of each log type for the current log entry
+    | summarize ErrorCount = countif(LogType == "Error"), WarningCount = countif(LogType == "Warning")
+)
+
+//Converting columns to lists
+
+let ScalarTable = datatable(Name:string, City:string)
+[
+    'Alice', 'New York',
+    'Bob', 'Los Angeles',
+    'Charlie', 'Chicago'
+];
+ScalarTable
+| extend NameArray = pack_array(Name, City)
+
+let Logs = datatable(Timestamp: datetime, LogLines: dynamic)
+[
+    datetime(2024-09-18), dynamic(["INFO: System started", "WARNING: High memory usage", "ERROR: Out of memory", "DEBUG: Memory stats"]),
+    datetime(2024-09-19), dynamic(["INFO: Service restarted", "ERROR: Failed to connect", "DEBUG: Connection retry"]),
+    datetime(2024-09-20), dynamic(["INFO: Backup started", "INFO: Backup completed"])
+];
+let searchTerm1 = "ERROR";
+let searchTerm2 = "WARNING";
+Logs
+| mv-apply LogLine = LogLines to typeof(string) on (
+    where LogLine contains searchTerm1 or LogLine contains searchTerm2
+)

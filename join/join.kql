@@ -1,0 +1,23 @@
+﻿let Logs = datatable(UserId:int, Message:string, Timestamp:datetime)
+[
+    1, "Login", datetime(2024-09-17 08:00:00),
+    1, "Error occurred", datetime(2024-09-17 08:05:00),
+    4, "Error ignored", datetime(2024-09-13 08:03:00),
+    2, "Data upload", datetime(2024-09-17 08:00:00),
+    3, "Logout", datetime(2024-09-17 08:45:00)
+];
+let Users = datatable(UserId:int, UserName:string, Department:string)
+[
+    1, "Alice", "IT",
+    2, "Bob", "HR",
+    3, "Charlie", "Finance",
+    4, "Mariel", "Engineering"
+];
+let log2 = (Logs
+| join kind=inner (Users) on UserId
+| project UserId, Message, Timestamp);
+log2
+| take 10;
+// union (log2 | extend Source="Log Data"), (Users | extend Message="", Timestamp=now(), Source="Users")
+// | project Source, UserName, Department, Message, Timestamp
+// | where Source == "Log Data"

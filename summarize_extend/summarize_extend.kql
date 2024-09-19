@@ -1,0 +1,14 @@
+﻿datatable(UserId:int, Message:string, Timestamp:datetime)
+[
+    1, "Login", datetime(2024-09-17 08:00:00),
+    1, "Error occurred", datetime(2024-09-17 08:05:00),
+    1, "Logout", datetime(2024-09-17 08:10:00),
+    2, "Data upload", datetime(2024-09-17 08:00:00),
+    2, "File processed", datetime(2024-09-17 08:20:00),
+    3, "Login", datetime(2024-09-17 08:30:00),
+    3, "File missing", datetime(2024-09-17 08:35:00),
+    3, "Error occurred", datetime(2024-09-17 08:40:00),
+    3, "Logout", datetime(2024-09-17 08:45:00)
+]
+| summarize MessagesList=make_list(Message) by UserId
+| extend countof(tostring(MessagesList),"Login",'normal')

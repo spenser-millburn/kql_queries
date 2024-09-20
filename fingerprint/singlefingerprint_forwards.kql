@@ -1,0 +1,70 @@
+﻿let _endTime = datetime(2024-09-12T22:54:01Z);
+let _startTime = datetime(2024-08-13T22:54:01Z);
+let bot = dynamic(null);
+let faultID = dynamic(null);
+let no_faults = dynamic(['05_12_00']);
+let sites = dynamic(null);
+let swVer = dynamic(null);
+let fn_GetFatalFaultsFromBotStats_BySite_ByTimespan = (site: string, clustername:string, date1: datetime, date2: datetime, bot: dynamic, faultID: dynamic, no_faults: dynamic)
+ 		{
+			let BS = cluster(clustername).database(site).BotStats
+      | where timestamp > ago(30d)
+			| where isempty(['bot']) or __grid_id in (bot)
+			| where isempty(['faultID']) or fault_id in (faultID)
+      | where isempty(['swVer']) or __ab_ver in (swVer)
+			| where fault_id !in (no_faults)
+      | extend SplitUCC = split(current_ucc, ':')
+      | extend AreaType = tostring(array_slice(SplitUCC, 0, 0))
+      | where AreaType !has "0." or AreaType has "0.0"
+      | project-away SplitUCC, AreaType
+			| project fault_info= case(isempty(fault_info), "{fault_info_blank}", fault_info), fault_id, fault_type, timestamp, __grid_id
+			;
+			BS
+			;
+		}
+ ;
+  let Walmart_0100 = view() {fn_GetFatalFaultsFromBotStats_BySite_ByTimespan('Walmart_0100', 'adx-adm-prod-grp1.southcentralus', ['_startTime'], ['_endTime'], ['bot'], ['faultID'], ['no_faults'])};
+  let Walmart_0125 = view() {fn_GetFatalFaultsFromBotStats_BySite_ByTimespan('Walmart_0125', 'adx-adm-prod-grp1.southcentralus', ['_startTime'], ['_endTime'], ['bot'], ['faultID'], ['no_faults'])};
+  let Walmart_0144 = view() {fn_GetFatalFaultsFromBotStats_BySite_ByTimespan('Walmart_0144', 'adx-adm-prod-grp1.southcentralus', ['_startTime'], ['_endTime'], ['bot'], ['faultID'], ['no_faults'])};
+  let Walmart_0277 = view() {fn_GetFatalFaultsFromBotStats_BySite_ByTimespan('Walmart_0277', 'adx-adm-prod-grp1.southcentralus', ['_startTime'], ['_endTime'], ['bot'], ['faultID'], ['no_faults'])};
+  let Walmart_0444 = view() {fn_GetFatalFaultsFromBotStats_BySite_ByTimespan('Walmart_0444', 'adx-adm-prod-grp1.southcentralus', ['_startTime'], ['_endTime'], ['bot'], ['faultID'], ['no_faults'])};  
+  let Walmart_0517 = view() {fn_GetFatalFaultsFromBotStats_BySite_ByTimespan('Walmart_0517', 'adx-adm-prod-grp1.southcentralus', ['_startTime'], ['_endTime'], ['bot'], ['faultID'], ['no_faults'])};
+  let Walmart_1148 = view() {fn_GetFatalFaultsFromBotStats_BySite_ByTimespan('Walmart_1148', 'adx-adm-prod-grp1.southcentralus', ['_startTime'], ['_endTime'], ['bot'], ['faultID'], ['no_faults'])};
+  let Walmart_1413 = view() {fn_GetFatalFaultsFromBotStats_BySite_ByTimespan('Walmart_1413', 'adx-adm-prod-grp1.southcentralus', ['_startTime'], ['_endTime'], ['bot'], ['faultID'], ['no_faults'])};
+  let Walmart_2740 = view() {fn_GetFatalFaultsFromBotStats_BySite_ByTimespan('Walmart_2740', 'adx-adm-prod-grp3.eastus2'       , ['_startTime'], ['_endTime'], ['bot'], ['faultID'], ['no_faults'])};
+  let Walmart_2932 = view() {fn_GetFatalFaultsFromBotStats_BySite_ByTimespan('Walmart_2932', 'adx-adm-prod-grp1.southcentralus', ['_startTime'], ['_endTime'], ['bot'], ['faultID'], ['no_faults'])};
+  let Walmart_3207 = view() {fn_GetFatalFaultsFromBotStats_BySite_ByTimespan('Walmart_3207', 'adx-adm-prod-grp3.eastus2'       , ['_startTime'], ['_endTime'], ['bot'], ['faultID'], ['no_faults'])};
+  let Walmart_3226 = view() {fn_GetFatalFaultsFromBotStats_BySite_ByTimespan('Walmart_3226', 'adx-adm-prod-grp2.southcentralus', ['_startTime'], ['_endTime'], ['bot'], ['faultID'], ['no_faults'])};    
+  let Walmart_3258 = view() {fn_GetFatalFaultsFromBotStats_BySite_ByTimespan('Walmart_3258', 'adx-adm-prod-grp4.westus2'       , ['_startTime'], ['_endTime'], ['bot'], ['faultID'], ['no_faults'])};
+  let Walmart_3267 = view() {fn_GetFatalFaultsFromBotStats_BySite_ByTimespan('Walmart_3267', 'adx-adm-prod-grp2.southcentralus', ['_startTime'], ['_endTime'], ['bot'], ['faultID'], ['no_faults'])};  
+  let Walmart_3278 = view() {fn_GetFatalFaultsFromBotStats_BySite_ByTimespan('Walmart_3278', 'adx-adm-prod-grp2.southcentralus', ['_startTime'], ['_endTime'], ['bot'], ['faultID'], ['no_faults'])};  
+  let Walmart_3295 = view() {fn_GetFatalFaultsFromBotStats_BySite_ByTimespan('Walmart_3295', 'adx-adm-prod-grp2.southcentralus', ['_startTime'], ['_endTime'], ['bot'], ['faultID'], ['no_faults'])};
+  let Walmart_5092 = view() {fn_GetFatalFaultsFromBotStats_BySite_ByTimespan('Walmart_5092', 'adx-adm-prod-grp2.southcentralus', ['_startTime'], ['_endTime'], ['bot'], ['faultID'], ['no_faults'])};
+  let Walmart_5236 = view() {fn_GetFatalFaultsFromBotStats_BySite_ByTimespan('Walmart_5236', 'adx-adm-prod-grp2.southcentralus', ['_startTime'], ['_endTime'], ['bot'], ['faultID'], ['no_faults'])}; 
+  //let Walmart_5260 = view() {fn_GetFatalFaultsFromBotStats_BySite_ByTimespan('Walmart_5260', ['_startTime'], ['_endTime'], ['bot'], ['faultID'], ['no_faults'])};
+// union withsource=SourceName Walmart_0100//, Walmart_0125 //Walmart_0144, Walmart_0277, Walmart_0444, Walmart_0517, Walmart_1148, Walmart_1413, Walmart_2740, Walmart_2932, Walmart_3207, Walmart_3226, Walmart_3258, Walmart_3267, Walmart_3278, Walmart_3295, Walmart_5092, Walmart_5236
+let GetFaults = (gridid:string, ts:datetime) {
+    union withsource=SourceName Walmart_0100//, Walmart_0125 //Walmart_0144, Walmart_0277, Walmart_0444, Walmart_0517, Walmart_1148, Walmart_1413, Walmart_2740, Walmart_2932, Walmart_3207, Walmart_3226, Walmart_3258, Walmart_3267, Walmart_3278, Walmart_3295, Walmart_5092, Walmart_5236
+    | where timestamp between (ts .. datetime_add("minute", 3, ts))  // Time range: 2 minutes before the fatal timestamp to the fatal timestamp
+    | where __grid_id == gridid
+    | where fault_type == "Warning" or fault_type == "Fatal"  // Filter for Warning or Fatal faults
+    | order by timestamp asc  // Ensure faults are ordered chronologically
+    | summarize make_list(fault_id)  // Aggregate fault IDs into a list
+};
+union
+GetFaults("B020000383", datetime(2024-09-17T15:42:07.774515Z)),
+GetFaults("B0200002EU", datetime(2024-09-17T16:12:24.444671Z)),
+GetFaults("B0200002PF", datetime(2024-09-17T15:42:09.966719Z)),
+GetFaults("B0200002YR", datetime(2024-08-31T18:14:06.054526Z)),
+GetFaults("B0200002EM", datetime(2024-08-27T06:18:59.675430Z)),
+GetFaults("B0200002RH", datetime(2024-08-27T08:12:07.915479Z)),
+GetFaults("B0200002RU", datetime(2024-08-23T02:45:54.648168Z)),
+GetFaults("B0200002GS", datetime(2024-09-03T06:19:42.160472Z)),
+GetFaults("B02000037H", datetime(2024-08-29T01:20:24.626392Z)),
+GetFaults("B0200002RH", datetime(2024-08-27T10:07:48.294729Z)),
+GetFaults("B010000267", datetime(2024-08-28T02:21:00.849807Z)),
+GetFaults("B0200002EU", datetime(2024-09-15T06:36:37.741216Z)),
+GetFaults("B0200002HR", datetime(2024-09-12T19:26:50.681166Z)),
+GetFaults("B02000038T", datetime(2024-08-28T18:44:02.021025Z)),
+GetFaults("B0200002RH", datetime(2024-08-28T11:55:26.693400Z)),
+GetFaults("B02000037X", datetime(2024-09-02T16:30:15.42561Z));

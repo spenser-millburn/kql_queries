@@ -1,7 +1,0 @@
-﻿
- BotStats
-    | where timestamp between (ago(3d)..now())  // Adjust the time range as needed
-    | where __msg_t == 13
-    | summarize faults = tostring(make_set(fault_id)) by __grid_id, bin(timestamp, 10m)
-    | take 100
-    | where __grid_id endswith "3CB"

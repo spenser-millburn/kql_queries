@@ -1,0 +1,58 @@
+﻿let _endTime = datetime(2024-09-12T22:54:01Z);
+let _startTime = datetime(2024-08-13T22:54:01Z);
+let bot = dynamic(null);
+let faultID = dynamic(null);
+let no_faults = dynamic(['05_12_00']);
+let sites = dynamic(null);
+let swVer = dynamic(null);
+let fn_CheckFaultSequence = (fault_id: string, timestamp: datetime, previous_fault_id: string, previous_timestamp: datetime, current_grid_id: string, previous_grid_id: string) 
+{
+    let time_diff = datetime_diff('second', previous_timestamp, timestamp);
+    fault_id == "0C_05_00" 
+    and previous_fault_id == "05_07_00"
+    and time_diff <= 60
+    and current_grid_id == previous_grid_id;
+};
+let fn_GetFatalFaultsFromBotStats_BySite_ByTimespan = (site: string, clustername:string, date1: datetime, date2: datetime, bot: dynamic, faultID: dynamic, no_faults: dynamic)
+ 		{
+			let BS = cluster(clustername).database(site).BotStats
+			// | where timestamp  between (['_startTime'] .. ['_endTime']) and __msg_t == 13
+      | where timestamp > ago(90d)
+			| where isempty(['bot']) or __grid_id in (bot)
+			| where isempty(['faultID']) or fault_id in (faultID)
+      | where isempty(['swVer']) or __ab_ver in (swVer)
+			| where fault_id !in (no_faults)
+      | extend SplitUCC = split(current_ucc, ':')
+      | extend AreaType = tostring(array_slice(SplitUCC, 0, 0))
+      | where AreaType !has "0." or AreaType has "0.0"
+      | project-away SplitUCC, AreaType
+			;
+			BS
+			;
+		}
+ ;
+  let Walmart_0100 = view() {fn_GetFatalFaultsFromBotStats_BySite_ByTimespan('Walmart_0100', 'adx-adm-prod-grp1.southcentralus', ['_startTime'], ['_endTime'], ['bot'], ['faultID'], ['no_faults'])};
+  let Walmart_0125 = view() {fn_GetFatalFaultsFromBotStats_BySite_ByTimespan('Walmart_0125', 'adx-adm-prod-grp1.southcentralus', ['_startTime'], ['_endTime'], ['bot'], ['faultID'], ['no_faults'])};
+  let Walmart_0144 = view() {fn_GetFatalFaultsFromBotStats_BySite_ByTimespan('Walmart_0144', 'adx-adm-prod-grp1.southcentralus', ['_startTime'], ['_endTime'], ['bot'], ['faultID'], ['no_faults'])};
+  let Walmart_0277 = view() {fn_GetFatalFaultsFromBotStats_BySite_ByTimespan('Walmart_0277', 'adx-adm-prod-grp1.southcentralus', ['_startTime'], ['_endTime'], ['bot'], ['faultID'], ['no_faults'])};
+  let Walmart_0444 = view() {fn_GetFatalFaultsFromBotStats_BySite_ByTimespan('Walmart_0444', 'adx-adm-prod-grp1.southcentralus', ['_startTime'], ['_endTime'], ['bot'], ['faultID'], ['no_faults'])};  
+  let Walmart_0517 = view() {fn_GetFatalFaultsFromBotStats_BySite_ByTimespan('Walmart_0517', 'adx-adm-prod-grp1.southcentralus', ['_startTime'], ['_endTime'], ['bot'], ['faultID'], ['no_faults'])};
+  let Walmart_1148 = view() {fn_GetFatalFaultsFromBotStats_BySite_ByTimespan('Walmart_1148', 'adx-adm-prod-grp1.southcentralus', ['_startTime'], ['_endTime'], ['bot'], ['faultID'], ['no_faults'])};
+  let Walmart_1413 = view() {fn_GetFatalFaultsFromBotStats_BySite_ByTimespan('Walmart_1413', 'adx-adm-prod-grp1.southcentralus', ['_startTime'], ['_endTime'], ['bot'], ['faultID'], ['no_faults'])};
+  let Walmart_2740 = view() {fn_GetFatalFaultsFromBotStats_BySite_ByTimespan('Walmart_2740', 'adx-adm-prod-grp3.eastus2'       , ['_startTime'], ['_endTime'], ['bot'], ['faultID'], ['no_faults'])};
+  let Walmart_2932 = view() {fn_GetFatalFaultsFromBotStats_BySite_ByTimespan('Walmart_2932', 'adx-adm-prod-grp1.southcentralus', ['_startTime'], ['_endTime'], ['bot'], ['faultID'], ['no_faults'])};
+  let Walmart_3207 = view() {fn_GetFatalFaultsFromBotStats_BySite_ByTimespan('Walmart_3207', 'adx-adm-prod-grp3.eastus2'       , ['_startTime'], ['_endTime'], ['bot'], ['faultID'], ['no_faults'])};
+  let Walmart_3226 = view() {fn_GetFatalFaultsFromBotStats_BySite_ByTimespan('Walmart_3226', 'adx-adm-prod-grp2.southcentralus', ['_startTime'], ['_endTime'], ['bot'], ['faultID'], ['no_faults'])};    
+  let Walmart_3258 = view() {fn_GetFatalFaultsFromBotStats_BySite_ByTimespan('Walmart_3258', 'adx-adm-prod-grp4.westus2'       , ['_startTime'], ['_endTime'], ['bot'], ['faultID'], ['no_faults'])};
+  let Walmart_3267 = view() {fn_GetFatalFaultsFromBotStats_BySite_ByTimespan('Walmart_3267', 'adx-adm-prod-grp2.southcentralus', ['_startTime'], ['_endTime'], ['bot'], ['faultID'], ['no_faults'])};  
+  let Walmart_3278 = view() {fn_GetFatalFaultsFromBotStats_BySite_ByTimespan('Walmart_3278', 'adx-adm-prod-grp2.southcentralus', ['_startTime'], ['_endTime'], ['bot'], ['faultID'], ['no_faults'])};  
+  let Walmart_3295 = view() {fn_GetFatalFaultsFromBotStats_BySite_ByTimespan('Walmart_3295', 'adx-adm-prod-grp2.southcentralus', ['_startTime'], ['_endTime'], ['bot'], ['faultID'], ['no_faults'])};
+  let Walmart_5092 = view() {fn_GetFatalFaultsFromBotStats_BySite_ByTimespan('Walmart_5092', 'adx-adm-prod-grp2.southcentralus', ['_startTime'], ['_endTime'], ['bot'], ['faultID'], ['no_faults'])};
+  let Walmart_5236 = view() {fn_GetFatalFaultsFromBotStats_BySite_ByTimespan('Walmart_5236', 'adx-adm-prod-grp2.southcentralus', ['_startTime'], ['_endTime'], ['bot'], ['faultID'], ['no_faults'])}; 
+  let fatalts = datetime(2024-09-02T16:30:15.42561Z);
+  let gridid = "B02000037X";
+    Walmart_0100
+    | where __msg_t == 13 and fault_type == "Fatal" and fault_id == "0C_05_00"
+    | where current_ucc matches regex "1.2:8.2:2.2:3.2|1.2:1.2:4.2:2.5|1.2:10.2:1.2:3.2|1.2:1.2:5.2:2.2|1.2:1.2:4.2:3.5|1.2:1.2:4.2:3.2|1.2:1.2:5.2:1.2|2.2:17.2:7.2:3.6"
+    // | count
+    | project __grid_id , timestamp, current_ucc
